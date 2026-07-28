@@ -3,7 +3,7 @@ import { IoSparkles } from "react-icons/io5";
 import { MdFlightTakeoff } from "react-icons/md";
 import { motion } from "motion/react"
 import { FcGoogle } from "react-icons/fc";
-import { signInWithPopup } from 'firebase/Auth';
+import { signInWithPopup } from 'firebase/auth';
 import { auth, provider } from '../utils/firebase';
 import axios from 'axios';
 import { ServerUrl } from '../App';
