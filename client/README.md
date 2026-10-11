@@ -1,16 +1,41 @@
-# React + Vite
+# 💻 HirePilot Frontend (Client)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The frontend client for **HirePilot**, built with React 19, Vite, Tailwind CSS v4, and Redux Toolkit.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🛠️ Architecture & Tech Stack
 
-## React Compiler
+- **React 19 & Vite:** Component-based UI with fast Hot Module Replacement.
+- **Redux Toolkit:** Manages user session state (`userData`, wallet credit balance) globally.
+- **React Router DOM v7:** Client-side SPA routing (`/`, `/interview`, `/history`, `/pricing`, `/report/:id`).
+- **Web Speech API:**
+  - `speechSynthesis`: Powers the AI interviewer voice.
+  - `webkitSpeechRecognition`: Browser-native real-time speech-to-text.
+- **Recharts & CircularProgressbar:** Visual rendering of interview analytics, score rings, and skill indicators.
+- **jsPDF & jsPDF-autotable:** Browser-side PDF generation for downloadable interview report cards.
+- **Tailwind CSS v4:** Modern `@tailwindcss/vite` utility styling.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🚀 Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 1. Install Dependencies
+```bash
+npm install
+```
+
+### 2. Configure Environment Variables
+Create `.env` in this directory:
+```env
+VITE_SERVER_URL=http://localhost:8000
+VITE_FIREBASE_APIKEY=your_firebase_api_key
+VITE_RAZORPAY_KEY_ID=your_razorpay_key_id
+```
+
+### 3. Run Development Server
+```bash
+npm run dev
+```
+
+App runs at `http://localhost:5173`.
