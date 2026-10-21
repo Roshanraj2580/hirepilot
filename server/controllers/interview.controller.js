@@ -3,8 +3,10 @@ import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf.mjs";
 import { askAi } from "../services/openRouter.service.js";
 import User from "../models/user.model.js";
 import Interview from "../models/interview.model.js";
+import { isS3Configured, uploadResumeToS3, deleteResumeFromS3 } from "../services/s3.service.js";
 
 export const analyzeResume = async (req, res) => {
+  let s3Key = null;
   try {
     if (!req.file) {
       return res.status(400).json({ message: "Resume required" });
@@ -12,6 +14,17 @@ export const analyzeResume = async (req, res) => {
     const filepath = req.file.path
 
     const fileBuffer = await fs.promises.readFile(filepath)
+
+    // Cloud Object Storage: Upload to AWS S3 if credentials are configured
+    if (isS3Configured()) {
+      try {
+        const s3Upload = await uploadResumeToS3(fileBuffer, req.file.originalname, req.file.mimetype);
+        s3Key = s3Upload.key;
+      } catch (s3Err) {
+        console.warn("AWS S3 upload warning:", s3Err.message);
+      }
+    }
+
     const uint8Array = new Uint8Array(fileBuffer)
 
     const pdf = await pdfjsLib.getDocument({ data: uint8Array }).promise;
@@ -72,6 +85,12 @@ Return strictly JSON:
 
   } catch (error) {
     console.error(error);
+
+    if (s3Key) {
+      try {
+        await deleteResumeFromS3(s3Key);
+      } catch (_) {}
+    }
 
     if (req.file && fs.existsSync(req.file.path)) {
       fs.unlinkSync(req.file.path);
